@@ -16,10 +16,6 @@ export class App extends Component {
     error: null,
   };
 
-  // componentDidMount() {
-  // fetchImages('dog', 1);
-  // }
-
   componentDidUpdate(_, prevState) {
     const { query, page } = this.state;
     if (prevState.query !== query || prevState.page !== page) {
@@ -39,14 +35,19 @@ export class App extends Component {
 
   handleLoadingMore = () => {
     this.setState(prevState => ({ page: prevState.page + 1 }));
+    setInterval(function () {
+      window.scrollBy({
+        top: 400,
+        behavior: 'smooth',
+      });
+    }, 1000);
+    //не розумію чому скрол не працює без setInterval і де його правильно прописувати?
   };
 
   getImages = async (query, page) => {
     this.setState({ isLoading: true });
     try {
       const imageObj = await fetchImages(query, page);
-      console.log(imageObj.total);
-      console.log(imageObj);
 
       if (!imageObj.hits.length) {
         this.setState({
@@ -54,7 +55,7 @@ export class App extends Component {
         });
         return;
       }
-      this.setState((prevState)=>({
+      this.setState(prevState => ({
         images: [...prevState.images, ...imageObj.hits],
         isShowBtn: this.state.page * 12 < imageObj.totalHits,
       }));
@@ -65,14 +66,37 @@ export class App extends Component {
     }
   };
 
+
   render() {
     const { images, isLoading, isEmpty, error, isShowBtn } = this.state;
     return (
       <div>
         <Searchbar onSubmit={this.handleSubmit} />
         {isLoading && <Spinner />}
-        {isEmpty && <p>Sorry! there are no images...😒</p>}
-        {error && <p>{error} 😡</p>}
+        {isEmpty && (
+          <p
+            style={{
+              position: 'fixed',
+              top: '50%',
+              left: ' 50%',
+              transform: 'translate(-50%, -50%)',
+            }}
+          >
+            Sorry! there are no images...😒
+          </p>
+        )}
+        {error && (
+          <p
+            style={{
+              position: 'fixed',
+              top: '50%',
+              left: ' 50%',
+              transform: 'translate(-50%, -50%)',
+            }}
+          >
+            {error} 😡
+          </p>
+        )}
         <ImageGallery imageItem={images} />
         {isShowBtn && <Button loadMore={this.handleLoadingMore} />}
       </div>

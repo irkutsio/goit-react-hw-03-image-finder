@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { Header } from './Searchbar.styled';
 
 export class Searchbar extends Component {
   state = {
@@ -20,7 +21,7 @@ handleSubmit = (e) => {
   render() {
     const { searchField } = this.state;
     return (
-      <header>
+      <Header>
         <form onSubmit={this.handleSubmit}>
           <button type="submit">
             <span>Search</span>
@@ -36,7 +37,7 @@ handleSubmit = (e) => {
             placeholder="Search images and photos"
           />
         </form>
-      </header>
+      </Header>
     );
   }
 }
