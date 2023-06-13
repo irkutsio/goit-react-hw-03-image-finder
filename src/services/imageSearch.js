@@ -7,6 +7,6 @@ export async function fetchImages(searchWord, page) {
  const respons = await axios.get(
     `${BASE_URL}?q=${searchWord}&page=${page}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=12`
   );
-  return respons.data.hits
+  return respons.data
 }
 

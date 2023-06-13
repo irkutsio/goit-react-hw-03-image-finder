@@ -7,7 +7,7 @@ export class Searchbar extends Component {
 
   handleChange = e => {
     this.setState({
-      searchField: e.target.value,
+      searchField: e.target.value.trim(),
     });
   };
 

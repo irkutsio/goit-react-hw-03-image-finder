@@ -2,6 +2,8 @@ import { Component } from 'react';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { Searchbar } from './Searchbar/Searchbar';
 import { fetchImages } from 'services/imageSearch';
+import { Spinner } from './Loader/Loader';
+import { Button } from './Button/Button';
 
 export class App extends Component {
   state = {
@@ -18,31 +20,61 @@ export class App extends Component {
   // fetchImages('dog', 1);
   // }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(_, prevState) {
     const { query, page } = this.state;
-    if (prevState.query !== query) {
+    if (prevState.query !== query || prevState.page !== page) {
       this.getImages(query, page);
     }
-    console.log(this.state.images)
   }
 
-  getImages = async (query, page) => {
-    const imageArr = await fetchImages(query, page);
-this.setState({
-      images: [...imageArr],
+  handleSubmit = value => {
+    this.setState({
+      query: value,
+      page: 1,
+      images: [],
+      isEmpty: false,
+      isShowBtn: false,
     });
-    console.log(this.state.images);
   };
 
-  handleSubmit = value => {
-    this.setState({ query: value });
+  handleLoadingMore = () => {
+    this.setState(prevState => ({ page: prevState.page + 1 }));
+  };
+
+  getImages = async (query, page) => {
+    this.setState({ isLoading: true });
+    try {
+      const imageObj = await fetchImages(query, page);
+      console.log(imageObj.total);
+      console.log(imageObj);
+
+      if (!imageObj.hits.length) {
+        this.setState({
+          isEmpty: true,
+        });
+        return;
+      }
+      this.setState((prevState)=>({
+        images: [...prevState.images, ...imageObj.hits],
+        isShowBtn: this.state.page * 12 < imageObj.totalHits,
+      }));
+    } catch (error) {
+      this.setState({ error: error.message });
+    } finally {
+      this.setState({ isLoading: false });
+    }
   };
 
   render() {
+    const { images, isLoading, isEmpty, error, isShowBtn } = this.state;
     return (
       <div>
         <Searchbar onSubmit={this.handleSubmit} />
-        <ImageGallery />
+        {isLoading && <Spinner />}
+        {isEmpty && <p>Sorry! there are no images...😒</p>}
+        {error && <p>{error} 😡</p>}
+        <ImageGallery imageItem={images} />
+        {isShowBtn && <Button loadMore={this.handleLoadingMore} />}
       </div>
     );
   }
