@@ -1,6 +1,7 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Header } from './Searchbar.styled';
-import { BsSearch } from "react-icons/bs";
+import { BsSearch } from 'react-icons/bs';
 
 export class Searchbar extends Component {
   state = {
@@ -25,7 +26,10 @@ export class Searchbar extends Component {
       <Header>
         <form onSubmit={this.handleSubmit}>
           <button type="submit">
-            <span>Search<BsSearch size={13} style={{marginLeft:'4px'}}/></span>
+            <span>
+              Search
+              <BsSearch size={13} style={{ marginLeft: '4px' }} />
+            </span>
           </button>
 
           <input
@@ -42,3 +46,7 @@ export class Searchbar extends Component {
     );
   }
 }
+
+Searchbar.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};

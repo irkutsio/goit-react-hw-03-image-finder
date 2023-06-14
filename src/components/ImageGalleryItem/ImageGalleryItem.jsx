@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import { Item } from './ImageGalleryItem.styled';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
+import PropTypes from 'prop-types';
 
 
 export class ImageGalleryItem extends Component {
@@ -41,4 +42,9 @@ export class ImageGalleryItem extends Component {
       </Item>
     );
   }
+}
+
+ImageGalleryItem.propTypes = {
+  previeImg: PropTypes.string.isRequired,
+  largeImageURL: PropTypes.string.isRequired,
 }

@@ -1,4 +1,5 @@
 import Modal from 'react-modal';
+import PropTypes from 'prop-types';
 import { Img } from './ModalComponent.styled';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 
@@ -29,3 +30,10 @@ export const ModalComponent = ({ isOpen, clickedImage, closeModal }) => {
     </Modal>
   );
 };
+
+
+ModalComponent.propTypes = {
+  isOpen: PropTypes.bool.isRequired, 
+  clickedImage: PropTypes.string.isRequired, 
+  closeModal: PropTypes.func.isRequired,
+}
