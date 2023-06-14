@@ -18,9 +18,12 @@ export class App extends Component {
   };
 
   componentDidUpdate(_, prevState) {
-    const { query, page } = this.state;
+    const { query, page, images } = this.state;
     if (prevState.query !== query || prevState.page !== page) {
       this.getImages(query, page);
+    }
+    if (prevState.images !== images) {
+      console.log('scroll');
       setTimeout(() => {
         window.scrollBy({
           top: 720,
@@ -55,12 +58,11 @@ export class App extends Component {
         });
         return;
       }
-    
-        this.setState(prevState => ({
-          images: [...prevState.images, ...imageObj.hits],
-          isShowBtn: this.state.page * 12 < imageObj.totalHits,
-        }));
-    
+
+      this.setState(prevState => ({
+        images: [...prevState.images, ...imageObj.hits],
+        isShowBtn: this.state.page * 12 < imageObj.totalHits,
+      }));
     } catch (error) {
       this.setState({ error: error.message });
     } finally {
