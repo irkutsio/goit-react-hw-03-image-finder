@@ -10,6 +10,7 @@ export const Header = styled.header`
     rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 
   button {
+
     padding: 4px 10px;
     margin-right: 24px;
     border-radius: 5px;

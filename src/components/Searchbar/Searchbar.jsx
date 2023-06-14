@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { Header } from './Searchbar.styled';
+import { BsSearch } from "react-icons/bs";
 
 export class Searchbar extends Component {
   state = {
@@ -12,11 +13,11 @@ export class Searchbar extends Component {
     });
   };
 
-handleSubmit = (e) => {
+  handleSubmit = e => {
     e.preventDefault();
-    this.props.onSubmit(this.state.searchField)
-    this.setState({searchField:''})
-}
+    this.props.onSubmit(this.state.searchField);
+    this.setState({ searchField: '' });
+  };
 
   render() {
     const { searchField } = this.state;
@@ -24,7 +25,7 @@ handleSubmit = (e) => {
       <Header>
         <form onSubmit={this.handleSubmit}>
           <button type="submit">
-            <span>Search</span>
+            <span>Search<BsSearch size={13} style={{marginLeft:'4px'}}/></span>
           </button>
 
           <input
