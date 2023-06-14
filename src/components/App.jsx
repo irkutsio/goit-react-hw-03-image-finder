@@ -22,8 +22,7 @@ export class App extends Component {
     if (prevState.query !== query || prevState.page !== page) {
       this.getImages(query, page);
     }
-    if (prevState.images !== images) {
-      console.log('scroll');
+    if (prevState.images.length !== images.length) {
       setTimeout(() => {
         window.scrollBy({
           top: 720,
