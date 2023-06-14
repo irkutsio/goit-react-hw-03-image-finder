@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Container = styled.div`
   padding: 24px;
   display: flex;
-  justify-content: center;
+  justify-content:end;
 
   button {
     padding: 18px 28px;

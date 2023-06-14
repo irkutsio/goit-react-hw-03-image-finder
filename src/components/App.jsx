@@ -4,6 +4,7 @@ import { Searchbar } from './Searchbar/Searchbar';
 import { fetchImages } from 'services/imageSearch';
 import { Spinner } from './Loader/Loader';
 import { Button } from './Button/Button';
+import { Warning } from './Warnings/Warning.styled';
 
 export class App extends Component {
   state = {
@@ -20,6 +21,12 @@ export class App extends Component {
     const { query, page } = this.state;
     if (prevState.query !== query || prevState.page !== page) {
       this.getImages(query, page);
+      setTimeout(() => {
+        window.scrollBy({
+          top: 720,
+          behavior: 'smooth',
+        });
+      }, 1000);
     }
   }
 
@@ -35,13 +42,6 @@ export class App extends Component {
 
   handleLoadingMore = () => {
     this.setState(prevState => ({ page: prevState.page + 1 }));
-    setInterval(function () {
-      window.scrollBy({
-        top: 400,
-        behavior: 'smooth',
-      });
-    }, 1000);
-    //не розумію чому скрол не працює без setInterval і де його правильно прописувати?
   };
 
   getImages = async (query, page) => {
@@ -55,10 +55,12 @@ export class App extends Component {
         });
         return;
       }
-      this.setState(prevState => ({
-        images: [...prevState.images, ...imageObj.hits],
-        isShowBtn: this.state.page * 12 < imageObj.totalHits,
-      }));
+    
+        this.setState(prevState => ({
+          images: [...prevState.images, ...imageObj.hits],
+          isShowBtn: this.state.page * 12 < imageObj.totalHits,
+        }));
+    
     } catch (error) {
       this.setState({ error: error.message });
     } finally {
@@ -66,37 +68,14 @@ export class App extends Component {
     }
   };
 
-
   render() {
     const { images, isLoading, isEmpty, error, isShowBtn } = this.state;
     return (
       <div>
         <Searchbar onSubmit={this.handleSubmit} />
         {isLoading && <Spinner />}
-        {isEmpty && (
-          <p
-            style={{
-              position: 'fixed',
-              top: '50%',
-              left: ' 50%',
-              transform: 'translate(-50%, -50%)',
-            }}
-          >
-            Sorry! there are no images...😒
-          </p>
-        )}
-        {error && (
-          <p
-            style={{
-              position: 'fixed',
-              top: '50%',
-              left: ' 50%',
-              transform: 'translate(-50%, -50%)',
-            }}
-          >
-            {error} 😡
-          </p>
-        )}
+        {isEmpty && <Warning>Sorry! there are no images...😒</Warning>}
+        {error && <Warning>{error} 😡</Warning>}
         <ImageGallery imageItem={images} />
         {isShowBtn && <Button loadMore={this.handleLoadingMore} />}
       </div>
