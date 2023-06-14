@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const Header = styled.header`
+margin-bottom: 40px;
   background-color: #aac4a3;
   display: flex;
   justify-content: center;

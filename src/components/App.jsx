@@ -25,7 +25,7 @@ export class App extends Component {
     if (prevState.images.length !== images.length) {
       setTimeout(() => {
         window.scrollBy({
-          top: 720,
+          top: 1150,
           behavior: 'smooth',
         });
       }, 1000);
